@@ -5,19 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.fitlife.data.local.entity.TypeEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TypesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(types: List<TypeEntity>)
+    suspend fun insertAll(items: List<TypeEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(type: TypeEntity)
-
-    @Query("SELECT * FROM types ORDER BY name ASC")
-    suspend fun getAll(): List<TypeEntity>
-
-    @Query("SELECT * FROM types WHERE name = :name LIMIT 1")
-    suspend fun getByName(name: String): TypeEntity?
+    @Query("SELECT * FROM types ORDER BY name COLLATE NOCASE")
+    fun observeAll(): Flow<List<TypeEntity>>
 }
