@@ -1,0 +1,59 @@
+{
+  "fitnessCenters": [
+    {
+      "id": "fc_001",
+      "name": "Pulse Gym",
+      "address": "Kyiv, Khreshchatyk St, 22",
+      "latitude": 50.4476,
+      "longitude": 30.5227,
+      "priceLevel": 2,
+      "rating": 4.6,
+      "schedule": "Mon–Sun 07:00–23:00",
+      "phone": "+380441112233",
+      "website": "https://pulsegym.example",
+      "description": "Modern gym with cardio zone and free weights.",
+      "types": ["Gym", "Crossfit"],
+      "services": [
+        { "name": "Gym access (monthly)", "price": 1200.0 },
+        { "name": "Personal training", "price": 600.0 },
+        { "name": "Group training", "price": 250.0 }
+      ]
+    },
+    {
+      "id": "fc_002",
+      "name": "Balance Yoga Studio",
+      "address": "Kyiv, Saksahanskoho St, 45",
+      "latitude": 50.4409,
+      "longitude": 30.5066,
+      "priceLevel": 2,
+      "rating": 4.8,
+      "schedule": "Mon–Fri 08:00–21:00, Sat–Sun 09:00–18:00",
+      "phone": "+380442224455",
+      "website": "https://balanceyoga.example",
+      "description": "Yoga studio with beginner and advanced classes.",
+      "types": ["Yoga"],
+      "services": [
+        { "name": "Yoga class", "price": 300.0 },
+        { "name": "Yoga monthly pass", "price": 1500.0 }
+      ]
+    },
+    {
+      "id": "fc_003",
+      "name": "AquaFit Center",
+      "address": "Kyiv, Peremohy Ave, 10",
+      "latitude": 50.4547,
+      "longitude": 30.4663,
+      "priceLevel": 3,
+      "rating": 4.4,
+      "schedule": "Mon–Sun 08:00–22:00",
+      "phone": "+380443334466",
+      "website": "https://aquafit.example",
+      "description": "Fitness club with pool and spa zone.",
+      "types": ["Gym", "Swimming"],
+      "services": [
+        { "name": "Pool access (monthly)", "price": 2000.0 },
+        { "name": "Spa session", "price": 500.0 }
+      ]
+    }
+  ]
+}
