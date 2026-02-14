@@ -64,4 +64,9 @@ dependencies {
 
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
+
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
+
+    implementation("androidx.compose.material:material-icons-extended")
 }
