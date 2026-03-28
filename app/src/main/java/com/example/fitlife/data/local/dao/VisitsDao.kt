@@ -14,6 +14,11 @@ data class MonthCount(
     val count: Int
 )
 
+data class DayCount(
+    val day: String,   // "2026-03-28"
+    val count: Int
+)
+
 data class CenterCount(
     val centerId: String,
     val centerName: String,
@@ -88,4 +93,20 @@ interface VisitsDao {
         """
     )
     suspend fun countBetween(fromMs: Long, toMs: Long): Int
+
+    @Query("UPDATE visits SET comment = :comment WHERE id = :visitId")
+    suspend fun updateComment(visitId: Int, comment: String?)
+
+    @Query(
+        """
+    SELECT 
+      strftime('%Y-%m-%d', visit_date / 1000, 'unixepoch') AS day,
+      COUNT(*) AS count
+    FROM visits
+    WHERE visit_date BETWEEN :fromMs AND :toMs
+    GROUP BY day
+    ORDER BY day ASC
+    """
+    )
+    suspend fun countVisitsByDay(fromMs: Long, toMs: Long): List<DayCount>
 }
