@@ -44,37 +44,48 @@ interface VisitsDao {
     suspend fun getAll(): List<VisitEntity>
 
     @Query("SELECT * FROM visits WHERE center_id = :centerId ORDER BY visit_date DESC")
+    fun observeByCenter(centerId: String): Flow<List<VisitEntity>>
+
+    @Query("SELECT * FROM visits WHERE center_id = :centerId ORDER BY visit_date DESC")
     suspend fun getByCenter(centerId: String): List<VisitEntity>
 
     // ---- Simple stats ----
     @Query("SELECT COUNT(*) FROM visits")
     fun observeTotalCount(): Flow<Int>
 
-    @Query("""
+    // Групування по місяцях: visitDate (millis) -> seconds -> unixepoch
+    @Query(
+        """
         SELECT 
           strftime('%Y-%m', visit_date / 1000, 'unixepoch') AS yearMonth,
           COUNT(*) AS count
         FROM visits
         GROUP BY yearMonth
         ORDER BY yearMonth ASC
-    """)
+        """
+    )
     suspend fun countVisitsByMonth(): List<MonthCount>
 
-    @Query("""
+    @Query(
+        """
         SELECT 
           v.center_id AS centerId,
           fc.name AS centerName,
           COUNT(*) AS count
         FROM visits v
-        JOIN fitness_centers fc ON fc.id = v.center_id
+        INNER JOIN fitness_centers fc ON fc.id = v.center_id
         GROUP BY v.center_id
         ORDER BY count DESC
-    """)
+        """
+    )
     suspend fun countVisitsByCenter(): List<CenterCount>
 
-    @Query("""
-        SELECT COUNT(*) FROM visits
+    @Query(
+        """
+        SELECT COUNT(*) 
+        FROM visits
         WHERE visit_date BETWEEN :fromMs AND :toMs
-    """)
+        """
+    )
     suspend fun countBetween(fromMs: Long, toMs: Long): Int
 }

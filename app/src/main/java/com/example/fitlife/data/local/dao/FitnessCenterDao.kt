@@ -5,19 +5,20 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.fitlife.data.local.entity.FitnessCenterEntity
+import com.example.fitlife.data.local.relation.FitnessCenterServiceWithPrice
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FitnessCenterDao {
 
+    // ---------- Seed / basic ----------
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(items: List<FitnessCenterEntity>)
 
-    // Для seed check (ти вже це використовуєш)
     @Query("SELECT * FROM fitness_centers")
     suspend fun getAll(): List<FitnessCenterEntity>
 
-    // ✅ Етап 2: основний запит зі всіма фільтрами (опційні параметри)
+    // ---------- List filters (Stage 2) ----------
     @Query(
         """
         SELECT DISTINCT fc.* 
@@ -41,4 +42,49 @@ interface FitnessCenterDao {
         serviceQuery: String?,
         maxPrice: Double?
     ): Flow<List<FitnessCenterEntity>>
+
+    // ---------- Details (Stage 3) ----------
+    @Query(
+        """
+        SELECT * 
+        FROM fitness_centers
+        WHERE id = :centerId
+        LIMIT 1
+        """
+    )
+    fun observeCenterById(centerId: String): Flow<FitnessCenterEntity?>
+
+    @Query(
+        """
+        SELECT t.name
+        FROM types t
+        INNER JOIN fitness_centers_types fct ON fct.type_id = t.id
+        WHERE fct.fitness_center_id = :centerId
+        ORDER BY t.name COLLATE NOCASE
+        """
+    )
+    fun observeTypeNamesForCenter(centerId: String): Flow<List<String>>
+
+    @Query(
+        """
+        SELECT 
+            s.id AS serviceId,
+            s.name AS serviceName,
+            fcs.price AS price
+        FROM fitness_centers_services fcs
+        INNER JOIN services s ON s.id = fcs.service_id
+        WHERE fcs.fitness_center_id = :centerId
+        ORDER BY fcs.price ASC, s.name COLLATE NOCASE
+        """
+    )
+    fun observeServicesForCenter(centerId: String): Flow<List<FitnessCenterServiceWithPrice>>
+
+    @Query(
+        """
+        SELECT EXISTS(
+            SELECT 1 FROM favorites f WHERE f.center_id = :centerId
+        )
+        """
+    )
+    fun observeIsFavorite(centerId: String): Flow<Boolean>
 }

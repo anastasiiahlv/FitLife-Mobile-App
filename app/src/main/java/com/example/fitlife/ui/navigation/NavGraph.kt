@@ -54,5 +54,13 @@ fun FitLifeNavGraph(
         composable(Routes.STATS) {
             StatsScreen()
         }
+
+        composable("details/{id}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: return@composable
+            CenterDetailsScreen(
+                centerId = id,
+                onBack = { navController.popBackStack() }
+            )
+        }
     }
 }
