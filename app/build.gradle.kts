@@ -71,4 +71,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
 
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation("org.osmdroid:osmdroid-android:6.1.20")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 }

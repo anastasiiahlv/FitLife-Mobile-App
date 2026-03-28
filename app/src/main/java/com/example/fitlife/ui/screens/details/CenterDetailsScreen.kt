@@ -1,7 +1,16 @@
 package com.example.fitlife.ui.screens.details
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.net.Uri
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +33,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -32,10 +43,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitlife.data.local.entity.VisitEntity
 import com.example.fitlife.viewmodel.CenterDetailsViewModel
+import com.google.android.gms.location.LocationServices
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -69,6 +86,27 @@ fun CenterDetailsScreen(
         mutableLongStateOf(System.currentTimeMillis())
     }
 
+    var userLocation by remember { mutableStateOf<GeoPoint?>(null) }
+    var hasLocationPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        hasLocationPermission = granted
+        if (granted) {
+            fetchLastKnownLocation(context) { location ->
+                userLocation = GeoPoint(location.latitude, location.longitude)
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -99,6 +137,7 @@ fun CenterDetailsScreen(
         }
 
         val c = currentDetails.center
+        val centerPoint = GeoPoint(c.latitude, c.longitude)
 
         Column(
             modifier = Modifier
@@ -196,6 +235,45 @@ fun CenterDetailsScreen(
                 }
             ) {
                 Text(favLabel)
+            }
+
+            Text(
+                text = "Location",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            OsmMapView(
+                centerPoint = centerPoint,
+                centerTitle = c.name,
+                centerSnippet = c.address,
+                userLocation = userLocation,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(240.dp)
+            )
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(
+                    onClick = {
+                        if (hasLocationPermission) {
+                            fetchLastKnownLocation(context) { location ->
+                                userLocation = GeoPoint(location.latitude, location.longitude)
+                            }
+                        } else {
+                            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                        }
+                    }
+                ) {
+                    Text("Show my location")
+                }
+
+                Button(
+                    onClick = {
+                        openNavigation(context, c.latitude, c.longitude)
+                    }
+                ) {
+                    Text("Navigate")
+                }
             }
 
             Text(
@@ -408,6 +486,94 @@ fun CenterDetailsScreen(
             )
         }
     }
+}
+
+@Composable
+private fun OsmMapView(
+    centerPoint: GeoPoint,
+    centerTitle: String,
+    centerSnippet: String,
+    userLocation: GeoPoint?,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+
+    val mapView = remember {
+        MapView(context).apply {
+            layoutParams = android.view.ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            setMultiTouchControls(true)
+            controller.setZoom(15.0)
+        }
+    }
+
+    DisposableEffect(mapView) {
+        onDispose {
+            mapView.onDetach()
+        }
+    }
+
+    AndroidView(
+        factory = {
+            mapView
+        },
+        modifier = modifier,
+        update = { map ->
+            map.overlays.clear()
+            map.controller.setCenter(centerPoint)
+
+            val centerMarker = Marker(map).apply {
+                position = centerPoint
+                title = centerTitle
+                subDescription = centerSnippet
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            }
+            map.overlays.add(centerMarker)
+
+            userLocation?.let { myPoint ->
+                val userMarker = Marker(map).apply {
+                    position = myPoint
+                    title = "My location"
+                    setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                }
+                map.overlays.add(userMarker)
+            }
+
+            map.invalidate()
+        }
+    )
+}
+
+private fun fetchLastKnownLocation(
+    context: Context,
+    onLocationReceived: (Location) -> Unit
+) {
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+    if (
+        ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        return
+    }
+
+    fusedLocationClient.lastLocation
+        .addOnSuccessListener { location ->
+            if (location != null) {
+                onLocationReceived(location)
+            }
+        }
+}
+
+private fun openNavigation(
+    context: Context,
+    latitude: Double,
+    longitude: Double
+) {
+    val uri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude")
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    context.startActivity(intent)
 }
 
 private fun formatVisitDate(timestamp: Long): String {

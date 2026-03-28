@@ -17,6 +17,7 @@ import com.example.fitlife.ui.navigation.FitLifeNavGraph
 import com.example.fitlife.ui.theme.FitLifeTheme
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.padding
+import org.osmdroid.config.Configuration
 
 
 class MainActivity : ComponentActivity() {
@@ -24,6 +25,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        Configuration.getInstance().load(
+            applicationContext,
+            getSharedPreferences("osmdroid", MODE_PRIVATE)
+        )
+        Configuration.getInstance().userAgentValue = packageName
 
         val db = DatabaseProvider.get(this)
         lifecycleScope.launch {
