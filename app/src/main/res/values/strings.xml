@@ -1,3 +1,82 @@
 <resources>
     <string name="app_name">FitLife</string>
+
+    <string name="common_back">Back</string>
+    <string name="common_save">Save</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_loading">Loading...</string>
+    <string name="common_details">Details</string>
+    <string name="common_favorites">Favorites</string>
+    <string name="common_statistics">Statistics</string>
+
+    <string name="screen_centers_title">Fitness Centers</string>
+    <string name="centers_search_by_name">Search by name</string>
+    <string name="centers_type">Type</string>
+    <string name="centers_all_types">All types</string>
+    <string name="centers_min_rating">Min rating: %1$s</string>
+    <string name="centers_service">Service</string>
+    <string name="centers_max_price">Max price</string>
+    <string name="centers_clear">Clear</string>
+    <string name="centers_found">Found: %1$d</string>
+    <string name="center_rating">Rating: %1$s</string>
+
+    <string name="details_contacts_schedule">Contacts &amp; Schedule</string>
+    <string name="details_description">Description</string>
+    <string name="details_phone">Phone: %1$s</string>
+    <string name="details_website">Website: %1$s</string>
+    <string name="details_schedule">Schedule: %1$s</string>
+    <string name="details_types">Types</string>
+    <string name="details_services">Services</string>
+    <string name="details_location">Location</string>
+
+    <string name="details_add_to_favorites">Add to favorites</string>
+    <string name="details_remove_from_favorites">Remove from favorites</string>
+
+    <string name="details_show_my_location">Show my location</string>
+    <string name="details_navigate">Navigate</string>
+
+    <string name="details_add_visit">Add visit</string>
+    <string name="details_selected_datetime">Selected: %1$s</string>
+    <string name="details_select_date">Select date</string>
+    <string name="details_select_time">Select time</string>
+    <string name="details_comment_optional">Comment (optional)</string>
+    <string name="details_save_visit">Save visit</string>
+
+    <string name="details_visit_history">Visit history</string>
+    <string name="details_no_visits">No visits yet</string>
+    <string name="details_no_comment">No comment</string>
+
+    <string name="details_edit_visit_comment">Edit visit comment</string>
+    <string name="details_comment">Comment</string>
+
+    <string name="details_delete_visit">Delete visit</string>
+    <string name="details_delete_visit_confirm">Are you sure you want to delete this visit?</string>
+
+    <string name="details_map_my_location">My location</string>
+    <string name="details_currency_uah">%1$s грн</string>
+    <string name="common_dash">—</string>
+
+    <string name="favorites_empty">No favorite fitness centers yet</string>
+    <string name="favorites_title">Favorites</string>
+
+    <string name="stats_title">Statistics</string>
+    <string name="stats_visits_by_month">Visits by month</string>
+    <string name="stats_top_centers_by_visits">Top 5 centers by visits</string>
+    <string name="stats_cumulative_visits_30_days">Cumulative visits (last 30 days)</string>
+    <string name="stats_top_5">Top 5</string>
+    <string name="stats_visits_by_center">Visits by center</string>
+    <string name="stats_cumulative_visits">Cumulative visits</string>
+
+    <string name="bottom_centers">Centers</string>
+    <string name="bottom_favorites">Favorites</string>
+    <string name="bottom_stats">Stats</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_app_language">App language</string>
+    <string name="settings_language_system">System default</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_ukrainian">Українська</string>
+    <string name="bottom_settings">Settings</string>
 </resources>

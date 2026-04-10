@@ -4,13 +4,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.fitlife.R
+import androidx.compose.material.icons.filled.Settings
 
 private data class BottomItem(
     val route: String,
@@ -21,9 +25,10 @@ private data class BottomItem(
 @Composable
 fun FitLifeBottomBar(navController: NavController) {
     val items = listOf(
-        BottomItem(Routes.CENTERS, "Centers", Icons.Filled.List),
-        BottomItem(Routes.FAVORITES, "Favorites", Icons.Filled.Favorite),
-        BottomItem(Routes.STATS, "Stats", Icons.Filled.ShowChart),
+        BottomItem(Routes.CENTERS, stringResource(R.string.bottom_centers), Icons.Filled.List),
+        BottomItem(Routes.FAVORITES, stringResource(R.string.bottom_favorites), Icons.Filled.Favorite),
+        BottomItem(Routes.STATS, stringResource(R.string.bottom_stats), Icons.Filled.ShowChart),
+        BottomItem(Routes.SETTINGS, stringResource(R.string.bottom_settings), Icons.Filled.Settings),
     )
 
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -36,13 +41,12 @@ fun FitLifeBottomBar(navController: NavController) {
                 selected = selected,
                 onClick = {
                     navController.navigate(item.route) {
-                        // щоб не накопичувати копії екранів у backstack
                         popUpTo(Routes.CENTERS) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
                 },
-                icon = { androidx.compose.material3.Icon(item.icon, contentDescription = item.label) },
+                icon = { Icon(item.icon, contentDescription = item.label) },
                 label = { Text(item.label) }
             )
         }

@@ -1,3 +1,82 @@
 <resources>
     <string name="app_name">FitLife</string>
+
+    <string name="common_back">Назад</string>
+    <string name="common_save">Зберегти</string>
+    <string name="common_cancel">Скасувати</string>
+    <string name="common_edit">Редагувати</string>
+    <string name="common_delete">Видалити</string>
+    <string name="common_loading">Завантаження...</string>
+    <string name="common_details">Деталі</string>
+    <string name="common_favorites">Улюблені</string>
+    <string name="common_statistics">Статистика</string>
+
+    <string name="screen_centers_title">Фітнес-центри</string>
+    <string name="centers_search_by_name">Пошук за назвою</string>
+    <string name="centers_type">Тип</string>
+    <string name="centers_all_types">Усі типи</string>
+    <string name="centers_min_rating">Мін. рейтинг: %1$s</string>
+    <string name="centers_service">Послуга</string>
+    <string name="centers_max_price">Макс. ціна</string>
+    <string name="centers_clear">Очистити</string>
+    <string name="centers_found">Знайдено: %1$d</string>
+    <string name="center_rating">Рейтинг: %1$s</string>
+
+    <string name="details_contacts_schedule">Контакти та графік</string>
+    <string name="details_description">Опис</string>
+    <string name="details_phone">Телефон: %1$s</string>
+    <string name="details_website">Вебсайт: %1$s</string>
+    <string name="details_schedule">Графік: %1$s</string>
+    <string name="details_types">Типи</string>
+    <string name="details_services">Послуги</string>
+    <string name="details_location">Розташування</string>
+
+    <string name="details_add_to_favorites">Додати в улюблені</string>
+    <string name="details_remove_from_favorites">Видалити з улюблених</string>
+
+    <string name="details_show_my_location">Показати моє місцезнаходження</string>
+    <string name="details_navigate">Маршрут</string>
+
+    <string name="details_add_visit">Додати візит</string>
+    <string name="details_selected_datetime">Вибрано: %1$s</string>
+    <string name="details_select_date">Обрати дату</string>
+    <string name="details_select_time">Обрати час</string>
+    <string name="details_comment_optional">Коментар (необов’язково)</string>
+    <string name="details_save_visit">Зберегти візит</string>
+
+    <string name="details_visit_history">Історія візитів</string>
+    <string name="details_no_visits">Візитів ще немає</string>
+    <string name="details_no_comment">Без коментаря</string>
+
+    <string name="details_edit_visit_comment">Редагувати коментар до візиту</string>
+    <string name="details_comment">Коментар</string>
+
+    <string name="details_delete_visit">Видалити візит</string>
+    <string name="details_delete_visit_confirm">Ви впевнені, що хочете видалити цей візит?</string>
+
+    <string name="details_map_my_location">Моє місцезнаходження</string>
+    <string name="details_currency_uah">%1$s грн</string>
+    <string name="common_dash">—</string>
+
+    <string name="favorites_empty">Улюблених фітнес-центрів ще немає</string>
+    <string name="favorites_title">Улюблені</string>
+
+    <string name="stats_title">Статистика</string>
+    <string name="stats_visits_by_month">Візити по місяцях</string>
+    <string name="stats_top_centers_by_visits">Топ-5 центрів за кількістю візитів</string>
+    <string name="stats_cumulative_visits_30_days">Накопичені візити за останні 30 днів</string>
+    <string name="stats_top_5">Топ-5</string>
+    <string name="stats_visits_by_center">Візити по центрах</string>
+    <string name="stats_cumulative_visits">Накопичені візити</string>
+
+    <string name="bottom_centers">Центри</string>
+    <string name="bottom_favorites">Улюблені</string>
+    <string name="bottom_stats">Статистика</string>
+
+    <string name="settings_title">Налаштування</string>
+    <string name="settings_app_language">Мова застосунку</string>
+    <string name="settings_language_system">Системна</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_ukrainian">Українська</string>
+    <string name="bottom_settings">Налаштування</string>
 </resources>

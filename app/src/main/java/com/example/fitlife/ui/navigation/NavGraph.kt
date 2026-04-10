@@ -11,6 +11,7 @@ import com.example.fitlife.ui.screens.centers.CentersScreen
 import com.example.fitlife.ui.screens.details.CenterDetailsScreen
 import com.example.fitlife.ui.screens.favorites.FavoritesScreen
 import com.example.fitlife.ui.screens.stats.StatsScreen
+import com.example.fitlife.ui.screens.settings.SettingsScreen
 
 @Composable
 fun FitLifeNavGraph(
@@ -59,6 +60,12 @@ fun FitLifeNavGraph(
             val id = backStackEntry.arguments?.getString("id") ?: return@composable
             CenterDetailsScreen(
                 centerId = id,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.SETTINGS) {
+            SettingsScreen(
                 onBack = { navController.popBackStack() }
             )
         }

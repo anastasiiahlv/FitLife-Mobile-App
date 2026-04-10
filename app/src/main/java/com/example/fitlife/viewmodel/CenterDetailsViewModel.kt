@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 
 class CenterDetailsViewModel(app: Application) : AndroidViewModel(app) {
 
+    private val appContext = app.applicationContext
     private val db = DatabaseProvider.get(app)
     private val centersDao = db.fitnessCenterDao()
     private val favoritesDao = db.favoritesDao()

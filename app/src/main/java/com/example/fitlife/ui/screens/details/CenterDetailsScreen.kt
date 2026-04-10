@@ -34,7 +34,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -43,10 +42,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fitlife.R
 import com.example.fitlife.data.local.entity.VisitEntity
 import com.example.fitlife.viewmodel.CenterDetailsViewModel
 import com.google.android.gms.location.LocationServices
@@ -110,10 +111,10 @@ fun CenterDetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(details?.center?.name ?: "Details") },
+                title = { Text(details?.center?.name ?: stringResource(R.string.common_details)) },
                 navigationIcon = {
                     TextButton(onClick = onBack) {
-                        Text("Back")
+                        Text(stringResource(R.string.common_back))
                     }
                 }
             )
@@ -129,7 +130,7 @@ fun CenterDetailsScreen(
                     .padding(padding)
             ) {
                 Text(
-                    text = "Loading...",
+                    text = stringResource(R.string.common_loading),
                     modifier = Modifier.padding(16.dp)
                 )
             }
@@ -158,13 +159,16 @@ fun CenterDetailsScreen(
             )
 
             Text(
-                text = "Rating: ${String.format("%.1f", c.rating)}",
+                text = stringResource(
+                    R.string.center_rating,
+                    String.format("%.1f", c.rating)
+                ),
                 style = MaterialTheme.typography.bodyMedium
             )
 
             if (!c.description.isNullOrBlank()) {
                 Text(
-                    text = "Description",
+                    text = stringResource(R.string.details_description),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
@@ -174,39 +178,42 @@ fun CenterDetailsScreen(
             }
 
             Text(
-                text = "Contacts & Schedule",
+                text = stringResource(R.string.details_contacts_schedule),
                 style = MaterialTheme.typography.titleMedium
             )
 
             if (!c.phone.isNullOrBlank()) {
-                Text("Phone: ${c.phone}")
+                Text(stringResource(R.string.details_phone, c.phone ?: ""))
             }
 
             if (!c.website.isNullOrBlank()) {
-                Text("Website: ${c.website}")
+                Text(stringResource(R.string.details_website, c.website ?: ""))
             }
 
             if (!c.schedule.isNullOrBlank()) {
-                Text("Schedule: ${c.schedule}")
+                Text(stringResource(R.string.details_schedule, c.schedule ?: ""))
             }
 
             Text(
-                text = "Types",
+                text = stringResource(R.string.details_types),
                 style = MaterialTheme.typography.titleMedium
             )
 
             Text(
-                text = if (currentDetails.types.isEmpty()) "—"
-                else currentDetails.types.joinToString(", ")
+                text = if (currentDetails.types.isEmpty()) {
+                    stringResource(R.string.common_dash)
+                } else {
+                    currentDetails.types.joinToString(", ")
+                }
             )
 
             Text(
-                text = "Services",
+                text = stringResource(R.string.details_services),
                 style = MaterialTheme.typography.titleMedium
             )
 
             if (currentDetails.services.isEmpty()) {
-                Text("—")
+                Text(stringResource(R.string.common_dash))
             } else {
                 currentDetails.services.forEach { service ->
                     ElevatedCard(
@@ -219,15 +226,22 @@ fun CenterDetailsScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(service.serviceName)
-                            Text("${String.format("%.0f", service.price)} грн")
+                            Text(
+                                stringResource(
+                                    R.string.details_currency_uah,
+                                    String.format("%.0f", service.price)
+                                )
+                            )
                         }
                     }
                 }
             }
 
-            val favLabel =
-                if (currentDetails.isFavorite) "Remove from favorites"
-                else "Add to favorites"
+            val favLabel = if (currentDetails.isFavorite) {
+                stringResource(R.string.details_remove_from_favorites)
+            } else {
+                stringResource(R.string.details_add_to_favorites)
+            }
 
             Button(
                 onClick = {
@@ -238,7 +252,7 @@ fun CenterDetailsScreen(
             }
 
             Text(
-                text = "Location",
+                text = stringResource(R.string.details_location),
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -264,7 +278,7 @@ fun CenterDetailsScreen(
                         }
                     }
                 ) {
-                    Text("Show my location")
+                    Text(stringResource(R.string.details_show_my_location))
                 }
 
                 Button(
@@ -272,17 +286,20 @@ fun CenterDetailsScreen(
                         openNavigation(context, c.latitude, c.longitude)
                     }
                 ) {
-                    Text("Navigate")
+                    Text(stringResource(R.string.details_navigate))
                 }
             }
 
             Text(
-                text = "Add visit",
+                text = stringResource(R.string.details_add_visit),
                 style = MaterialTheme.typography.titleMedium
             )
 
             Text(
-                text = "Selected: ${formatVisitDate(selectedVisitDateTime)}",
+                text = stringResource(
+                    R.string.details_selected_datetime,
+                    formatVisitDate(selectedVisitDateTime)
+                ),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -310,7 +327,7 @@ fun CenterDetailsScreen(
                         ).show()
                     }
                 ) {
-                    Text("Select date")
+                    Text(stringResource(R.string.details_select_date))
                 }
 
                 Button(
@@ -337,14 +354,14 @@ fun CenterDetailsScreen(
                         ).show()
                     }
                 ) {
-                    Text("Select time")
+                    Text(stringResource(R.string.details_select_time))
                 }
             }
 
             OutlinedTextField(
                 value = visitComment,
                 onValueChange = { visitComment = it },
-                label = { Text("Comment (optional)") },
+                label = { Text(stringResource(R.string.details_comment_optional)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -355,16 +372,16 @@ fun CenterDetailsScreen(
                     selectedVisitDateTime = System.currentTimeMillis()
                 }
             ) {
-                Text("Save visit")
+                Text(stringResource(R.string.details_save_visit))
             }
 
             Text(
-                text = "Visit history",
+                text = stringResource(R.string.details_visit_history),
                 style = MaterialTheme.typography.titleMedium
             )
 
             if (visits.isEmpty()) {
-                Text("No visits yet")
+                Text(stringResource(R.string.details_no_visits))
             } else {
                 visits.forEach { visit ->
                     ElevatedCard(
@@ -380,7 +397,7 @@ fun CenterDetailsScreen(
                             )
 
                             Text(
-                                text = visit.comment ?: "No comment",
+                                text = visit.comment ?: stringResource(R.string.details_no_comment),
                                 style = MaterialTheme.typography.bodyMedium
                             )
 
@@ -394,7 +411,7 @@ fun CenterDetailsScreen(
                                         editComment = visit.comment ?: ""
                                     }
                                 ) {
-                                    Text("Edit")
+                                    Text(stringResource(R.string.common_edit))
                                 }
 
                                 Button(
@@ -402,7 +419,7 @@ fun CenterDetailsScreen(
                                         visitToDelete = visit
                                     }
                                 ) {
-                                    Text("Delete")
+                                    Text(stringResource(R.string.common_delete))
                                 }
                             }
                         }
@@ -419,12 +436,12 @@ fun CenterDetailsScreen(
                     editingVisit = null
                     editComment = ""
                 },
-                title = { Text("Edit visit comment") },
+                title = { Text(stringResource(R.string.details_edit_visit_comment)) },
                 text = {
                     OutlinedTextField(
                         value = editComment,
                         onValueChange = { editComment = it },
-                        label = { Text("Comment") },
+                        label = { Text(stringResource(R.string.details_comment)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                 },
@@ -439,7 +456,7 @@ fun CenterDetailsScreen(
                             editComment = ""
                         }
                     ) {
-                        Text("Save")
+                        Text(stringResource(R.string.common_save))
                     }
                 },
                 dismissButton = {
@@ -449,7 +466,7 @@ fun CenterDetailsScreen(
                             editComment = ""
                         }
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.common_cancel))
                     }
                 }
             )
@@ -460,9 +477,9 @@ fun CenterDetailsScreen(
                 onDismissRequest = {
                     visitToDelete = null
                 },
-                title = { Text("Delete visit") },
+                title = { Text(stringResource(R.string.details_delete_visit)) },
                 text = {
-                    Text("Are you sure you want to delete this visit?")
+                    Text(stringResource(R.string.details_delete_visit_confirm))
                 },
                 confirmButton = {
                     TextButton(
@@ -471,7 +488,7 @@ fun CenterDetailsScreen(
                             visitToDelete = null
                         }
                     ) {
-                        Text("Delete")
+                        Text(stringResource(R.string.common_delete))
                     }
                 },
                 dismissButton = {
@@ -480,7 +497,7 @@ fun CenterDetailsScreen(
                             visitToDelete = null
                         }
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.common_cancel))
                     }
                 }
             )
@@ -497,6 +514,7 @@ private fun OsmMapView(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val myLocationLabel = stringResource(R.string.details_map_my_location)
 
     val mapView = remember {
         MapView(context).apply {
@@ -532,7 +550,7 @@ private fun OsmMapView(
             userLocation?.let { myPoint ->
                 val userMarker = Marker(map).apply {
                     position = myPoint
-                    title = "My location"
+                    title = myLocationLabel
                     setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                 }
                 map.overlays.add(userMarker)

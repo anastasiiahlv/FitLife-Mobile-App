@@ -3,7 +3,6 @@ package com.example.fitlife.ui.screens.stats
 import android.graphics.Typeface
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fitlife.R
 import com.example.fitlife.data.local.dao.CenterCount
 import com.example.fitlife.data.local.dao.DayCount
 import com.example.fitlife.data.local.dao.MonthCount
@@ -53,30 +54,30 @@ fun StatsScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Statistics",
+            text = stringResource(R.string.stats_title),
             style = MaterialTheme.typography.headlineMedium
         )
 
         if (state.isLoading) {
-            Text("Loading...")
+            Text(stringResource(R.string.common_loading))
             return@Column
         }
 
-        ChartCard(title = "Visits by month") {
+        ChartCard(title = stringResource(R.string.stats_visits_by_month)) {
             BarChartView(
                 data = state.monthlyVisits,
                 modifier = Modifier.fillMaxWidth()
             )
         }
 
-        ChartCard(title = "Top 5 centers by visits") {
+        ChartCard(title = stringResource(R.string.stats_top_centers_by_visits)) {
             PieChartView(
                 data = state.topCenters,
                 modifier = Modifier.fillMaxWidth()
             )
         }
 
-        ChartCard(title = "Cumulative visits (last 30 days)") {
+        ChartCard(title = stringResource(R.string.stats_cumulative_visits_30_days)) {
             LineChartView(
                 data = state.dailyVisitsLast30Days,
                 modifier = Modifier.fillMaxWidth()
@@ -111,6 +112,8 @@ private fun BarChartView(
     data: List<MonthCount>,
     modifier: Modifier = Modifier
 ) {
+    val visitsByMonthLabel = stringResource(R.string.stats_visits_by_month)
+
     AndroidView(
         modifier = modifier,
         factory = { context ->
@@ -131,7 +134,7 @@ private fun BarChartView(
 
             val labels = data.map { it.yearMonth }
 
-            val dataSet = BarDataSet(entries, "Visits by month").apply {
+            val dataSet = BarDataSet(entries, visitsByMonthLabel).apply {
                 valueTextSize = 12f
             }
 
@@ -159,6 +162,9 @@ private fun PieChartView(
     data: List<CenterCount>,
     modifier: Modifier = Modifier
 ) {
+    val top5Label = stringResource(R.string.stats_top_5)
+    val visitsByCenterLabel = stringResource(R.string.stats_visits_by_center)
+
     AndroidView(
         modifier = modifier,
         factory = { context ->
@@ -167,7 +173,7 @@ private fun PieChartView(
                 description.isEnabled = false
                 setUsePercentValues(false)
                 setEntryLabelTextSize(12f)
-                centerText = "Top 5"
+                centerText = top5Label
                 setCenterTextSize(16f)
                 setCenterTextTypeface(Typeface.DEFAULT_BOLD)
                 animateY(800)
@@ -178,7 +184,7 @@ private fun PieChartView(
                 PieEntry(it.count.toFloat(), it.centerName)
             }
 
-            val dataSet = PieDataSet(entries, "Visits by center").apply {
+            val dataSet = PieDataSet(entries, visitsByCenterLabel).apply {
                 valueTextSize = 12f
 
                 colors = mutableListOf<Int>().apply {
@@ -188,6 +194,7 @@ private fun PieChartView(
                 }
             }
 
+            chart.centerText = top5Label
             chart.data = PieData(dataSet)
             chart.invalidate()
         }
@@ -199,6 +206,8 @@ private fun LineChartView(
     data: List<DayCount>,
     modifier: Modifier = Modifier
 ) {
+    val cumulativeVisitsLabel = stringResource(R.string.stats_cumulative_visits)
+
     AndroidView(
         modifier = modifier,
         factory = { context ->
@@ -221,13 +230,13 @@ private fun LineChartView(
 
             val labels = data.map { day ->
                 if (day.day.length >= 10) {
-                    day.day.substring(5) // MM-dd
+                    day.day.substring(5)
                 } else {
                     day.day
                 }
             }
 
-            val dataSet = LineDataSet(cumulativeEntries, "Cumulative visits").apply {
+            val dataSet = LineDataSet(cumulativeEntries, cumulativeVisitsLabel).apply {
                 valueTextSize = 10f
                 lineWidth = 2f
                 circleRadius = 3.5f

@@ -15,11 +15,6 @@ object DatabaseProvider {
                 AppDatabase::class.java,
                 "fitlife.db"
             )
-                // Для лабораторної можна дозволити це,
-                // але в реальному проєкті краще НЕ робити.
-                // .allowMainThreadQueries()
-
-                // Якщо міняєш схему і не хочеш робити міграції на етапі ЛР:
                 .fallbackToDestructiveMigration()
                 .build()
 

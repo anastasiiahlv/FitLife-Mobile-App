@@ -18,8 +18,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fitlife.R
 import com.example.fitlife.viewmodel.FavoritesViewModel
 
 @Composable
@@ -37,7 +39,7 @@ fun FavoritesScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No favorite fitness centers yet",
+                text = stringResource(R.string.favorites_empty),
                 style = MaterialTheme.typography.bodyLarge
             )
         }
@@ -51,7 +53,7 @@ fun FavoritesScreen(
     ) {
         item {
             Text(
-                text = "Favorites",
+                text = stringResource(R.string.favorites_title),
                 style = MaterialTheme.typography.headlineMedium
             )
         }
@@ -77,7 +79,10 @@ fun FavoritesScreen(
                     )
 
                     Text(
-                        text = "Rating: ${String.format("%.1f", center.rating)}",
+                        text = stringResource(
+                            R.string.center_rating,
+                            String.format("%.1f", center.rating)
+                        ),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

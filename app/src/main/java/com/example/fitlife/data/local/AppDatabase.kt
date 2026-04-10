@@ -26,7 +26,7 @@ import com.example.fitlife.data.local.entity.VisitEntity
         FitnessCenterTypeCrossRef::class,
         FitnessCenterServiceCrossRef::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
