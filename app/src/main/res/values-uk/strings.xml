@@ -21,6 +21,8 @@
     <string name="centers_clear">Очистити</string>
     <string name="centers_found">Знайдено: %1$d</string>
     <string name="center_rating">Рейтинг: %1$s</string>
+    <string name="centers_not_found_title">Нічого не знайдено</string>
+    <string name="centers_not_found_message">Спробуйте змінити пошуковий запит або фільтри.</string>
 
     <string name="details_contacts_schedule">Контакти та графік</string>
     <string name="details_description">Опис</string>

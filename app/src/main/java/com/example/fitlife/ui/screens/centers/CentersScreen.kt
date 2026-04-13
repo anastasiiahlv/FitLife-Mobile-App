@@ -2,6 +2,7 @@
 
 package com.example.fitlife.ui.screens.centers
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,19 +11,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,14 +35,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitlife.R
 import com.example.fitlife.data.local.entity.FitnessCenterEntity
 import com.example.fitlife.data.local.entity.TypeEntity
 import com.example.fitlife.viewmodel.CentersViewModel
+import androidx.compose.foundation.layout.padding
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CentersScreen(
     onOpenDetails: (String) -> Unit
@@ -57,99 +61,142 @@ fun CentersScreen(
 
     val minRatingText = String.format("%.1f", minRating)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Text(
-            text = stringResource(R.string.screen_centers_title),
-            style = MaterialTheme.typography.headlineMedium
-        )
-
-        Spacer(Modifier.height(12.dp))
-
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = vm::setSearchQuery,
-            label = { Text(stringResource(R.string.centers_search_by_name)) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(12.dp))
-
-        TypeDropdown(
-            types = types,
-            selectedTypeId = selectedTypeId,
-            onSelectTypeId = vm::setSelectedTypeId,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(12.dp))
-
-        Text(
-            text = stringResource(R.string.centers_min_rating, minRatingText)
-        )
-        Slider(
-            value = minRating.toFloat(),
-            onValueChange = { vm.setMinRating(it.toDouble()) },
-            valueRange = 0f..5f,
-            steps = 9,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(12.dp))
-
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
-            OutlinedTextField(
-                value = serviceQuery,
-                onValueChange = vm::setServiceQuery,
-                label = { Text(stringResource(R.string.centers_service)) },
-                singleLine = true,
-                modifier = Modifier.weight(1f)
+            Text(
+                text = stringResource(R.string.screen_centers_title),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
-            OutlinedTextField(
-                value = maxPriceText,
-                onValueChange = vm::setMaxPriceText,
-                label = { Text(stringResource(R.string.centers_max_price)) },
-                singleLine = true,
-                modifier = Modifier.width(140.dp)
-            )
-        }
-
-        Spacer(Modifier.height(12.dp))
-
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Button(onClick = vm::clearFilters) {
-                Text(stringResource(R.string.centers_clear))
-            }
+            Spacer(Modifier.height(4.dp))
 
             Text(
                 text = stringResource(R.string.centers_found, centers.size),
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(top = 10.dp)
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
 
-        Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(centers, key = { it.id }) { center ->
-                CenterRow(
-                    center = center,
-                    onClick = { onOpenDetails(center.id) }
-                )
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = vm::setSearchQuery,
+                        label = { Text(stringResource(R.string.centers_search_by_name)) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    TypeDropdown(
+                        types = types,
+                        selectedTypeId = selectedTypeId,
+                        onSelectTypeId = vm::setSelectedTypeId,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Column {
+                        Text(
+                            text = stringResource(R.string.centers_min_rating, minRatingText),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        Slider(
+                            value = minRating.toFloat(),
+                            onValueChange = { vm.setMinRating(it.toDouble()) },
+                            valueRange = 0f..5f,
+                            steps = 9,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = serviceQuery,
+                            onValueChange = vm::setServiceQuery,
+                            label = { Text(stringResource(R.string.centers_service)) },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        OutlinedTextField(
+                            value = maxPriceText,
+                            onValueChange = vm::setMaxPriceText,
+                            label = { Text(stringResource(R.string.centers_max_price)) },
+                            singleLine = true,
+                            modifier = Modifier.width(120.dp)
+                        )
+                    }
+
+                    OutlinedButton(
+                        onClick = vm::clearFilters,
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.centers_clear),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            if (centers.isEmpty()) {
+                ElevatedCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Text(
+                            text = stringResource(R.string.centers_not_found_title),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            text = stringResource(R.string.centers_not_found_message),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(centers, key = { it.id }) { center ->
+                        CenterRow(
+                            center = center,
+                            onClick = { onOpenDetails(center.id) }
+                        )
+                    }
+                }
             }
         }
     }
@@ -165,14 +212,33 @@ private fun CenterRow(
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onClick() },
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
     ) {
-        Column(Modifier.padding(12.dp)) {
-            Text(center.name, style = MaterialTheme.typography.titleMedium)
-            Text(center.address, style = MaterialTheme.typography.bodyMedium)
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Text(
+                text = center.name,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Text(
+                text = center.address,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
             Text(
                 text = stringResource(R.string.center_rating, ratingText),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Medium
             )
         }
     }
@@ -220,11 +286,11 @@ private fun TypeDropdown(
                 }
             )
 
-            types.forEach { t ->
+            types.forEach { type ->
                 DropdownMenuItem(
-                    text = { Text(t.name) },
+                    text = { Text(type.name) },
                     onClick = {
-                        onSelectTypeId(t.id)
+                        onSelectTypeId(type.id)
                         expanded = false
                     }
                 )

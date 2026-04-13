@@ -17,6 +17,7 @@ import com.example.fitlife.ui.navigation.FitLifeNavGraph
 import com.example.fitlife.ui.theme.FitLifeTheme
 import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
+import androidx.compose.material3.MaterialTheme
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
+                    containerColor = MaterialTheme.colorScheme.background,
                     bottomBar = { FitLifeBottomBar(navController) }
                 ) { innerPadding ->
                     FitLifeNavGraph(

@@ -21,6 +21,8 @@
     <string name="centers_clear">Clear</string>
     <string name="centers_found">Found: %1$d</string>
     <string name="center_rating">Rating: %1$s</string>
+    <string name="centers_not_found_title">Nothing found</string>
+    <string name="centers_not_found_message">Try changing the search query or filters.</string>
 
     <string name="details_contacts_schedule">Contacts &amp; Schedule</string>
     <string name="details_description">Description</string>
