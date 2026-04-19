@@ -60,6 +60,12 @@
 
     <string name="details_map_my_location">My location</string>
     <string name="details_currency_uah">%1$s грн</string>
+
+    <string name="details_file_actions">Visit file actions</string>
+    <string name="details_export_visits">Export visits</string>
+    <string name="details_import_visits">Import visits</string>
+    <string name="details_delete_export_file">Delete export file</string>
+
     <string name="common_dash">—</string>
 
     <string name="favorites_empty">No favorite fitness centers yet</string>

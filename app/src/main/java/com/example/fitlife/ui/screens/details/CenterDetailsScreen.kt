@@ -58,6 +58,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,6 +74,8 @@ fun CenterDetailsScreen(
 
     val visitsFlow = remember(centerId) { vm.visits(centerId) }
     val visits by visitsFlow.collectAsState(initial = emptyList())
+
+    val fileActionMessage by vm.fileActionMessage.collectAsState()
 
     var visitComment by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
@@ -105,6 +109,13 @@ fun CenterDetailsScreen(
             fetchLastKnownLocation(context) { location ->
                 userLocation = GeoPoint(location.latitude, location.longitude)
             }
+        }
+    }
+
+    LaunchedEffect(fileActionMessage) {
+        if (fileActionMessage != null) {
+            kotlinx.coroutines.delay(3000)
+            vm.clearFileActionMessage()
         }
     }
 
@@ -373,6 +384,37 @@ fun CenterDetailsScreen(
                 }
             ) {
                 Text(stringResource(R.string.details_save_visit))
+            }
+
+            Text(
+                text = stringResource(R.string.details_file_actions),
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = { vm.exportVisitsToFile() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.details_export_visits))
+                }
+
+                Button(
+                    onClick = { vm.importVisitsFromFile() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.details_import_visits))
+                }
+            }
+
+            if (fileActionMessage != null) {
+                Text(
+                    text = fileActionMessage ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
 
             Text(

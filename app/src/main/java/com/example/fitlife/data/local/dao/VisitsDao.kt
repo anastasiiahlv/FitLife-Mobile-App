@@ -10,12 +10,12 @@ import com.example.fitlife.data.local.entity.VisitEntity
 import kotlinx.coroutines.flow.Flow
 
 data class MonthCount(
-    val yearMonth: String,  // "2026-02"
+    val yearMonth: String,
     val count: Int
 )
 
 data class DayCount(
-    val day: String,   // "2026-03-28"
+    val day: String,
     val count: Int
 )
 
@@ -28,9 +28,11 @@ data class CenterCount(
 @Dao
 interface VisitsDao {
 
-    // ---- CRUD ----
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(visit: VisitEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(visits: List<VisitEntity>)
 
     @Update
     suspend fun update(visit: VisitEntity)
@@ -41,7 +43,9 @@ interface VisitsDao {
     @Query("DELETE FROM visits WHERE id = :visitId")
     suspend fun deleteById(visitId: Int)
 
-    // ---- Reads ----
+    @Query("DELETE FROM visits")
+    suspend fun deleteAll()
+
     @Query("SELECT * FROM visits ORDER BY visit_date DESC")
     fun observeAll(): Flow<List<VisitEntity>>
 
@@ -54,11 +58,12 @@ interface VisitsDao {
     @Query("SELECT * FROM visits WHERE center_id = :centerId ORDER BY visit_date DESC")
     suspend fun getByCenter(centerId: String): List<VisitEntity>
 
-    // ---- Simple stats ----
     @Query("SELECT COUNT(*) FROM visits")
     fun observeTotalCount(): Flow<Int>
 
-    // Групування по місяцях: visitDate (millis) -> seconds -> unixepoch
+    @Query("SELECT EXISTS(SELECT 1 FROM fitness_centers WHERE id = :centerId)")
+    suspend fun centerExists(centerId: String): Boolean
+
     @Query(
         """
         SELECT 
@@ -99,14 +104,14 @@ interface VisitsDao {
 
     @Query(
         """
-    SELECT 
-      strftime('%Y-%m-%d', visit_date / 1000, 'unixepoch') AS day,
-      COUNT(*) AS count
-    FROM visits
-    WHERE visit_date BETWEEN :fromMs AND :toMs
-    GROUP BY day
-    ORDER BY day ASC
-    """
+        SELECT 
+          strftime('%Y-%m-%d', visit_date / 1000, 'unixepoch') AS day,
+          COUNT(*) AS count
+        FROM visits
+        WHERE visit_date BETWEEN :fromMs AND :toMs
+        GROUP BY day
+        ORDER BY day ASC
+        """
     )
     suspend fun countVisitsByDay(fromMs: Long, toMs: Long): List<DayCount>
 }
