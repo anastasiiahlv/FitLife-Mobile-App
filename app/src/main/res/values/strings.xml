@@ -66,6 +66,12 @@
     <string name="details_import_visits">Import visits</string>
     <string name="details_delete_export_file">Delete export file</string>
 
+    <string name="details_location_hint">The map shows the fitness center location. Route building is opened in an external map application.</string>
+    <string name="details_open_route">Open route</string>
+    <string name="details_location_permission_required">Grant location permission to show your current position.</string>
+    <string name="details_location_found">Current location detected successfully.</string>
+    <string name="details_location_not_found">Unable to detect current location.</string>
+
     <string name="common_dash">—</string>
 
     <string name="favorites_empty">No favorite fitness centers yet</string>

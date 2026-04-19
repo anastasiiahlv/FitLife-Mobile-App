@@ -66,6 +66,12 @@
     <string name="details_import_visits">Імпортувати візити</string>
     <string name="details_delete_export_file">Видалити файл експорту</string>
 
+    <string name="details_location_hint">На карті показано розташування фітнес-центру. Для побудови маршруту відкривається зовнішній картографічний застосунок.</string>
+    <string name="details_open_route">Прокласти маршрут</string>
+    <string name="details_location_permission_required">Надайте дозвіл на доступ до геолокації, щоб показати вашу позицію.</string>
+    <string name="details_location_found">Поточну локацію успішно визначено.</string>
+    <string name="details_location_not_found">Не вдалося визначити поточну локацію.</string>
+
     <string name="common_dash">—</string>
 
     <string name="favorites_empty">Улюблених фітнес-центрів ще немає</string>
