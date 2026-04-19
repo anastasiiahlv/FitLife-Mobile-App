@@ -17,7 +17,6 @@ import java.util.UUID
 object DatabaseSeeder {
 
     suspend fun seedIfNeeded(context: Context, db: AppDatabase) {
-        // Якщо в БД вже є центри — нічого не робимо
         val alreadySeeded = db.fitnessCenterDao().getAll().isNotEmpty()
         if (alreadySeeded) return
 

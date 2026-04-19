@@ -23,6 +23,8 @@
     <string name="center_rating">Rating: %1$s</string>
     <string name="centers_not_found_title">Nothing found</string>
     <string name="centers_not_found_message">Try changing the search query or filters.</string>
+    <string name="centers_filters">Filters</string>
+    <string name="centers_service_placeholder">Yoga, pool...</string>
 
     <string name="details_contacts_schedule">Contacts &amp; Schedule</string>
     <string name="details_description">Description</string>
