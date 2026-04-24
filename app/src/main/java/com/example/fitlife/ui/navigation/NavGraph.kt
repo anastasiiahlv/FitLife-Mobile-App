@@ -10,8 +10,9 @@ import androidx.navigation.NavHostController
 import com.example.fitlife.ui.screens.centers.CentersScreen
 import com.example.fitlife.ui.screens.details.CenterDetailsScreen
 import com.example.fitlife.ui.screens.favorites.FavoritesScreen
-import com.example.fitlife.ui.screens.stats.StatsScreen
 import com.example.fitlife.ui.screens.settings.SettingsScreen
+import com.example.fitlife.ui.screens.settings.UserGuideScreen
+import com.example.fitlife.ui.screens.stats.StatsScreen
 
 @Composable
 fun FitLifeNavGraph(
@@ -66,6 +67,13 @@ fun FitLifeNavGraph(
 
         composable(Routes.SETTINGS) {
             SettingsScreen(
+                onBack = { navController.popBackStack() },
+                onOpenUserGuide = { navController.navigate(Routes.USER_GUIDE) }
+            )
+        }
+
+        composable(Routes.USER_GUIDE) {
+            UserGuideScreen(
                 onBack = { navController.popBackStack() }
             )
         }

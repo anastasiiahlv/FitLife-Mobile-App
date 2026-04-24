@@ -5,6 +5,7 @@ object Routes {
     const val FAVORITES = "favorites"
     const val STATS = "stats"
     const val SETTINGS = "settings"
+    const val USER_GUIDE = "user_guide"
 
     const val DETAILS = "details"
     const val DETAILS_WITH_ARG = "details/{centerId}"

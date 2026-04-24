@@ -89,10 +89,22 @@
     <string name="bottom_favorites">Улюблені</string>
     <string name="bottom_stats">Статистика</string>
 
-    <string name="settings_title">Налаштування</string>
+    <string name="settings_title">Параметри</string>
     <string name="settings_app_language">Мова застосунку</string>
     <string name="settings_language_system">Системна</string>
     <string name="settings_language_english">English</string>
     <string name="settings_language_ukrainian">Українська</string>
-    <string name="bottom_settings">Налаштування</string>
+    <string name="settings_guide_section">Посібник користувача</string>
+    <string name="bottom_settings">Параметри</string>
+
+    <string name="guide_title">Посібник користувача</string>
+    <string name="guide_about_title">Про посібник</string>
+    <string name="guide_about_text">У цьому розділі можна відкрити посібник користувача для застосунку FitLife. Посібник містить основну інформацію про роботу із застосунком та пояснення основних функцій.</string>
+    <string name="guide_features_title">Що описано в посібнику</string>
+    <string name="guide_feature_1">• головний екран і список центрів</string>
+    <string name="guide_feature_2">• пошук і фільтри</string>
+    <string name="guide_feature_3">• детальна інформація про центр</string>
+    <string name="guide_feature_4">• улюблені центри, візити та статистика</string>
+    <string name="guide_feature_5">• карта, маршрут і мовні налаштування</string>
+    <string name="guide_open_pdf">Відкрити посібник</string>
 </resources>

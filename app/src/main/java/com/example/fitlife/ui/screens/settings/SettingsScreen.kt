@@ -28,7 +28,8 @@ import com.example.fitlife.viewmodel.SettingsViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onOpenUserGuide: () -> Unit
 ) {
     val vm: SettingsViewModel = viewModel()
     val selectedLanguage by vm.selectedLanguage.collectAsState()
@@ -74,6 +75,16 @@ fun SettingsScreen(
                 selected = selectedLanguage == "uk",
                 onClick = { vm.setLanguage("uk") }
             )
+
+            Text(
+                text = stringResource(R.string.settings_guide_section),
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            ActionCard(
+                text = stringResource(R.string.guide_title),
+                onClick = onOpenUserGuide
+            )
         }
     }
 }
@@ -99,6 +110,29 @@ private fun LanguageOptionCard(
                 selected = selected,
                 onClick = onClick
             )
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActionCard(
+    text: String,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge
